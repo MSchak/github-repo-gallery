@@ -1,11 +1,12 @@
-//div with class of overview
 const overview = document.querySelector(".overview");
-const username = "MSchack";
+const username = "MSchak";
+const repoList = document.querySelector(".repo-list");
+
+
 
 const profileInfo = async function() {
     const data = await fetch (`https://api.github.com/users/${username}`);
     const user = await data.json();
-    console.log(user);
     display(user)
 };
 
@@ -27,3 +28,22 @@ const display = function(user){
         </div>`;
     overview.append(div);
 }
+
+const getRepos = async function() {
+  const data = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+  const repos = await data.json();
+  console.log(repos);
+    displayInfo(repos)
+};
+
+getRepos();
+
+const displayInfo = function (repos) {
+  for (const repo of repos){
+    const repoListItem = document.createElement("li");
+    repoListItem.classList.add("repo");
+    repoListItem.innerHTML = `<h3>${repo.name}</h3>`;
+    repoList.append(repoListItem);
+    }
+};
+
